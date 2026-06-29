@@ -19,14 +19,14 @@ def detect_emotion():
     
     # Validate that text was provided
     if not text_to_analyze:
-        return jsonify({"error": "No text provided"}), 400
+        return jsonify({"error": "Invalid text! Please try again!"}), 400
     
     # Call the emotion detector function
     result = emotion_detector(text_to_analyze)
     
     # Check if the emotion detection failed (all None values)
     if result['dominant_emotion'] is None:
-        return jsonify({"error": "Unable to process the text"}), 400
+        return jsonify({"error": "Invalid text! Please try again!"}), 400
     
     # Format the response as requested
     response_text = (
@@ -43,4 +43,4 @@ def detect_emotion():
 
 if __name__ == '__main__':
     # Run the Flask app on localhost:5000
-    app.run(host='localhost', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
