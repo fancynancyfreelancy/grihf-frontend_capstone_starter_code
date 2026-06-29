@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Emotion Detector</h1>
+        <p>Enter some text to analyze the emotions:</p>
+        
+        <form id="emotionForm">
+            <textarea id="textInput" placeholder="Enter text here..." required></textarea>
+            <button type="submit">Analyze Emotions</button>
+        </form>
+        
+        <div id="result" style="display:none;">
+            <h2>Analysis Result:</h2>
+            <p id="resultText"></p>
+        </div>
+        
+        <div id="error" style="display:none; color: red;">
+            <p id="errorText"></p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('emotionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const text = document.getElementById('textInput').value;
+            
+            fetch(`/emotionDetector?textToAnalyze=${encodeURIComponent(text)}`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('result').style.display = 'block';
+                    document.getElementById('error').style.display = 'none';
+                    document.getElementById('resultText').innerText = data;
+                })
+                .catch(error => {
+                    document.getElementById('error').style.display = 'block';
+                    document.getElementById('result').style.display = 'none';
+                    document.getElementById('errorText').innerText = 'Error: ' + error;
+                });
+        });
+    </script>
+</body>
+</html>
